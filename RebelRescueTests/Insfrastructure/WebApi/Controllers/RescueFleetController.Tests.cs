@@ -5,13 +5,13 @@ using RebelRescue.Api;
 using RebelRescue.Spi;
 using RebelRescue.Spi.Stubs;
 using RebelRescue.WebApi.Controllers;
+using RebelRescue.WebApi.Resources;
 
 namespace RebelRescueTests.Insfrastructure.WebApi.Controllers;
 
 public partial class RescueFleetControllerTests
 {
 
-    private readonly IStarShipInventory starShipInventory = new StarShipInventory();
     private readonly IAssembleAFleet assembleAFleet = new FleetAssembler(new StarShipInventory());
     private RescueFleetController controller;
 
@@ -44,10 +44,10 @@ public partial class RescueFleetControllerTests
         Check.That(result).IsInstanceOf<OkObjectResult>();
 
 #pragma warning disable CS8602 // Déréférencement d'une éventuelle référence null.
-        var fleet = (result as OkObjectResult).Value as Fleet;
+        var fleet = (result as OkObjectResult).Value as FleetResource;
 #pragma warning restore CS8602 // Déréférencement d'une éventuelle référence null.
 
-        var fleetCapacity = (from startship in fleet?.starships select startship.Capacity).Sum();
+        var fleetCapacity = (from startship in fleet?.Starships select startship.Capacity).Sum();
         Check.That(fleetCapacity).IsGreaterOrEqualThan(numberOfPassengers);
 
 

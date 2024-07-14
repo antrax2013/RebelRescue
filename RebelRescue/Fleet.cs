@@ -1,3 +1,3 @@
 ﻿namespace RebelRescue;
 
-public record Fleet(IEnumerable<Starship> starships);
+public record Fleet(IEnumerable<Starship> Starships);

@@ -2,5 +2,5 @@
 
 public interface IAssembleAFleet
 {
-    Fleet ForPassengers(int numberOfPassengers);
+    Task<Fleet> ForPassengers(int numberOfPassengers);
 }

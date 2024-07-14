@@ -1,3 +1,3 @@
 ﻿namespace RebelRescue;
 
-public record Starship(string Name, int Capacity);
+public record Starship(string Name, int Capacity, int Speed);

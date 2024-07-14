@@ -2,5 +2,5 @@
 
 public interface IStarShipInventory
 {
-    IEnumerable<Starship> GetStarships();
+    Task<IEnumerable<Starship>> GetStarships();
 }

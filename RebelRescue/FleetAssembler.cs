@@ -7,19 +7,19 @@ public class FleetAssembler(IStarShipInventory starShipInventory) : IAssembleAFl
 {
     private readonly IStarShipInventory StarShipInventory = starShipInventory;
 
-    public Fleet ForPassengers(int numberOfPassengers)
+    public async Task<Fleet> ForPassengers(int numberOfPassengers)
     {
-        List<Starship> starships = GetStartShisHavingPassengersCapacity().ToList();
+        List<Starship> starships = (await GetStartShisHavingPassengersCapacity()).ToList();
         IEnumerable<Starship> rescueStarships = SelectStartShips(numberOfPassengers, starships);
         return new Fleet(rescueStarships);
     }
 
-    private IEnumerable<Starship> SelectStartShips(int numberOfPassengers, List<Starship> starships)
+    private static IEnumerable<Starship> SelectStartShips(int numberOfPassengers, List<Starship> starships)
     {
         List<Starship> fleet = [];
         int capacityOfFleet = 0;
 
-        foreach (var starship in starships.OrderByDescending(s=> s.Capacity)) {
+        foreach (var starship in starships.OrderByDescending(s => s.Speed).ThenByDescending(s=> s.Capacity)) {
             fleet.Add(starship);
             capacityOfFleet+=starship.Capacity;
 
@@ -31,8 +31,8 @@ public class FleetAssembler(IStarShipInventory starShipInventory) : IAssembleAFl
         return fleet;
     }
 
-    private IEnumerable<Starship> GetStartShisHavingPassengersCapacity()
+    private async Task<IEnumerable<Starship>> GetStartShisHavingPassengersCapacity()
     {
-        return StarShipInventory.GetStarships().Where(s=> s.Capacity > 0).ToList();
+        return (await StarShipInventory.GetStarships()).ToList().Where(s=> s.Capacity > 0).ToList();
     }
 }

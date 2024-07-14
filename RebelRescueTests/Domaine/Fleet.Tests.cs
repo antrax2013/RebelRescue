@@ -10,7 +10,7 @@ public partial class FleetTests
 {
 
     [Test]
-    public void Should_Assemble_A_Fleet_For_1050_Passengers()
+    public async Task Should_Assemble_A_Fleet_For_1050_Passengers()
     {
         // Given
         int numberOfPassengers = 1050;
@@ -18,11 +18,11 @@ public partial class FleetTests
         IAssembleAFleet assembleAFleet = new FleetAssembler(starShipInventory);
 
         // When 
-        Fleet fleet = assembleAFleet.ForPassengers(numberOfPassengers);
+        Fleet fleet = await assembleAFleet.ForPassengers(numberOfPassengers);
 
         // Then
-        var existsNoTransportMachins = fleet?.starships.Where(s => s.Capacity == 0).Any() ?? false;
-        var fleetCapacity = (from startship in fleet?.starships select startship.Capacity).Sum();
+        var existsNoTransportMachins = fleet?.Starships.Where(s => s.Capacity == 0).Any() ?? false;
+        var fleetCapacity = (from startship in fleet?.Starships select startship.Capacity).Sum();
 
         Check.That(existsNoTransportMachins).IsFalse();
         Check.That(fleetCapacity).IsGreaterOrEqualThan(numberOfPassengers);
